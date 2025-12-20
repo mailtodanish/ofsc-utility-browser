@@ -1,6 +1,6 @@
 # Enhanced ofsc utility
 
-A lightweight utility library for interacting with **Oracle Field Service Cloud (OFSC)**.
+A lightweight utility library for interacting with **Oracle Field Service Cloud (OFSC)** using cdn for broswer/html.
 
 ## Features
 
@@ -11,190 +11,78 @@ A lightweight utility library for interacting with **Oracle Field Service Cloud 
 - 🎯 **Modular architecture** for tree-shaking
 - 🔧 **Multiple import styles** for flexibility
 
-## Installation
+## Latest version:
 
-```bash
-npm install ofsc-utility
+```html
+<script src="https://unpkg.com/ofsc-utility-browser/dist/ofsc-utilities-min.js"></script>
 ```
 
-## Functions implemented
+## Specific version (recommended)
 
-### Download
-
-Please see the code snippet below.
-
-#### csv
-
-    downloadWorkZoneCSV(process.env.clientID, process.env.clientSecret, process.env.instanceId)
-    downloadAllResourcesCSV(process.env.clientID, process.env.clientSecret, process.env.instanceId)
-    downloadAllUsersCSV(process.env.clientID, process.env.clientSecret, process.env.instanceId)
-    downloadAllInventoryTypesCSV(process.env.clientID, process.env.clientSecret, process.env.instanceId)
-    downloadAllEventsOfDayCSV(process.env.clientID, process.env.clientSecret, process.env.instanceId, process.env.subscriptionId,"2025-12-05")
-    // Download Collaboration groups  assigned to users
-    generateUsersCollaborationCSV(process.env.clientID, process.env.clientSecret, process.env.instanceId) 
-    // Download all resource's inventories
-    generateAllOnHandInventoryOfAllResourcesCSV(process.env.clientID, process.env.clientSecret, process.env.instanceId) 
-
-#### records
-
-    getOAuthToken("clientId", "clientSecret", "instanceId")
-    getInventoryTypesDetail("clientId", "clientSecret", "instanceId"."inventory_label")
-    updateCreateInventoryType("clientId", "clientSecret", "instanceId"."inventory_label")
-    getAllActivities("clientId", "clientSecret", "instanceId"."resources","dateFrom","dateTo","q","fields")
-    getActivityCustomerInventories("clientId", "clientSecret", "instanceId"."activityId")
-    createActivityCustomerInventories( "clientId", "clientSecret", "instanceId"."activityId","payload")
-    downloadAllEventsOfDay(process.env.clientID, process.env.clientSecret, process.env.instanceId, process.env.subscriptionId,"2025-12-05")
-    getActivitybyId("clientId", "clientSecret", "instanceId"."activityId")
-
-## Usage
-
-downloadWorkZoneCSV("bot", "XXXXXXXXX", "compXXX.test")
-
-### CommonJS
-
-```js
-const ofs = require("ofsc-utility");
-
-ofs.User.generateUsersCollaborationCSV(
-    process.env.clientID,
-    process.env.clientSecret,
-    process.env.instanceId,
-    process.env.subscriptionId
-);
+```html
+<script src="https://unpkg.com/ofsc-utility-browser@1.0.0/dist/ofsc-utilities-min.js"></script>
 ```
 
-```js
-async function run() {
-  let data = await ofs.InventoryType.getInventoryTypesDetail("clientId", "clientSecret", "instanceId", "inventory_label");
-  console.error(data);
-}
-run();
-```
+### Uses
 
-```js
-const ofs = require("ofsc-utility");
+```html
+<script src="https://unpkg.com/ofsc-utility-browser/dist/ofsc-utilities-min.js"></script>
+<script type="module">
+  const form = document.getElementById("ofscForm");
+  const submitBtn = document.getElementById("submitBtn");
+  const btnText = document.getElementById("btnText");
+  const statusDiv = document.getElementById("status");
 
-ofs
-  .getOAuthToken("clientId", "clientSecret", "instanceId")
-  .then((token) => {
-    console.log(token);
-  })
-  .catch((err) => {
-    console.error("Error fetching token:", err);
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    submitBtn.disabled = true;
+    btnText.innerHTML = 'Processing <span class="loading"></span>';
+
+    try {
+      const clientIDInput = document.getElementById("clientID");
+      const clientSecretInput = document.getElementById("clientSecret");
+      const instanceIdInput = document.getElementById("instanceId");
+      const regionSelect = document.getElementById("region");
+      const startDateInput = document.getElementById("startDate");
+      const endDateInput = document.getElementById("endDate");
+      const clientID = clientIDInput.value;
+      const clientSecret = clientSecretInput.value;
+      const instanceId = instanceIdInput.value;
+      const region = regionSelect.value;
+      const startDate = startDateInput.value;
+      const endDate = endDateInput.value;
+
+      const res = await window.OFSC.Activity.getAllActivities(
+        clientID,
+        clientSecret,
+        instanceId,
+        region,
+        startDate,
+        endDate,
+        "status=='pending' and XA_ACTIVITY_NOTES!=''",
+        "XA_ACTIVITY_NOTES,status,activityId,activityType,date,resourceId",
+        true
+      );
+
+      const csvData = res.map((item) => ({
+        activityId: item.activityId,
+        activityType: item.activityType,
+        date: item.date,
+        resourceId: item.resourceId,
+      }));
+
+      window.OFSC.Utilities.downloadCSV(csvData);
+      showStatus(`Downloaded ${csvData.length} records`, "success");
+    } catch (err) {
+      console.error(err);
+      showStatus(err.message || "Failed", "error");
+    } finally {
+      submitBtn.disabled = false;
+      btnText.textContent = "Download CSV";
+    }
   });
-```
-
-```js
-const ofs = require("ofsc-utility");
-
-ofs.WorkZone.downloadWorkZoneCSV("clientId", "clientSecret", "instanceId")
-  .then(() => {
-    console.log("successful");
-  })
-  .catch((err) => {
-    console.error("Error:", err);
-  });
-```
-
-```js
-const ofs = require("ofsc-utility");
-
-ofs
-  .downloadAllResourcesCSV("clientId", "clientSecret", "instanceId")
-  .then(() => {
-    console.log("successful");
-  })
-  .catch((err) => {
-    console.error("Error:", err);
-  });
-```
-
-```js
-const ofs = require("ofsc-utility");
-
-ofs
-  .downloadAllUsersCSV("clientId", "clientSecret", "instanceId")
-  .then(() => {
-    console.log("successful");
-  })
-  .catch((err) => {
-    console.error("Error:", err);
-  });
-```
-
-```js
-const ofs = require("ofsc-utility");
-
-async function run() {
-  const payload = {
-    label: "inventory_label",
-    name: "Ordered Part",
-    unitOfMeasurement: "ea",
-    active: true,
-    nonSerialized: true,
-    modelProperty: "part_item_number_rev",
-    quantityPrecision: 0,
-    translations: [
-      {
-        language: "en",
-        name: "Ordered Part",
-        unitOfMeasurement: "ea",
-        languageISO: "en-US",
-      },
-    ],
-  };
-
-  try {
-    const result = await updateCreateInventoryType("CLIENT_ID", "CLIENT_SECRET", "INSTANCE_URL", "inventory_label", payload);
-
-    console.log("Updated:", result);
-  } catch (err) {
-    console.error(err);
-  }
-}
-
-run();
-```
-
-```js
-const ofs = require("ofsc-utility");
-async function run() {
-  try {
-    const result = await ofs.getAllActivities(
-      (clientId = "CLIENT_ID"),
-      (clientSecret = "CLIENT_SECRET"),
-      (instanceUrl = "INSTANCE_URL"),
-      (resources = "US"),
-      (dateFrom = "2025-11-05"),
-      (dateTo = "2025-12-05"),
-      (q = "status=='pending' and ACTIVITY_NOTES!=''"),
-      (fields = "ACTIVITY_NOTES,status,activityId,activityType,date,resourceId")
-    );
-
-    console.log("Updated:", result);
-  } catch (err) {
-    console.error(err);
-  }
-}
-
-run();
-```
-
-```js
-ofs.getActivityCustomerInventories("CLIENT_ID", "CLIENT_SECRET", "INSTANCE_URL", "activityId").then((data) => {
-  console.log(data);
-});
-```
-
-```js
-const ofs = require("ofsc-utility");
-ofs.Events.downloadAllEventsOfDayCSV(
-  process.env.clientID,
-  process.env.clientSecret,
-  process.env.instanceId,
-  process.env.subscriptionId,
-  "2025-12-05"
-);
+</script>
 ```
 
 ## License

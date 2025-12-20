@@ -1,32 +1,18 @@
+import * as Activity from "./activities";
+import * as OauthTokenService from "./oauthTokenService";
+import * as Utilities from "./utilities";
+import { downloadCSV } from "./utilities";
 
-// Export all methods grouped by category
-export * as Activity from './activities';
-export * as OauthTokenService from './oauthTokenService';
-
-
-export * as Utilities from './utilities';
+// Export grouped namespaces
+export { Activity, OauthTokenService, Utilities };
 
 // Export types
-export * from './types';
+  export * from "./types";
 
-
-export {
-  getOAuthToken
-} from './oauthTokenService';
-
-
-
-export { getActivitybyId, getAllActivities } from './activities';
-
-
-
-
-// Default export with all functionality
-const OfscUtility = {
-  getOAuthToken: require('./oauthTokenService').getOAuthToken,
-  getAllActivities: require('./activities').getAllActivities,
-  getActivitybyId: require('./activities').getActivitybyId
-
+// Default export (for convenience)
+export default {
+  Activity,
+  OauthTokenService,
+  Utilities,
+  downloadCSV
 };
-
-export default OfscUtility;

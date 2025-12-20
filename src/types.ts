@@ -12,6 +12,7 @@ export interface WorkZoneResponse {
   offset: number;
   totalResults: number;
 }
+export type CSVRow = Record<string, string | number | boolean | null | undefined>;
 
 export interface ResourceResponse {
   items: any[];

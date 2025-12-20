@@ -1,6 +1,8 @@
 import { DOMParser } from "xmldom";
 import { getOAuthToken } from "../oauthTokenService";
 
+import { CSVRow } from '../types';
+
 /**
  * Fetches a URL with retry logic for expired tokens.
  *
@@ -31,7 +33,7 @@ export const fetchWithRetry = async (
             }
         });
     };
-    console.log(`➡️ Fetching ${url}`);
+    
     // Try with the current token
     let res = await doFetch(token);
 
@@ -78,16 +80,19 @@ export const fetchWithRetry = async (
 
 
 
-export function saveCsv<T extends Record<string, any>>(
-    rows: T[],
-    filePath: string
-): string{
+
+
+export function stringCsv<T extends Record<string, any>>(rows: T[]): string {
     if (!rows || rows.length === 0) {
         throw new Error("CSV creation failed: no rows provided.");
     }
 
-    // Extract headers from the first row
-    const headers = Object.keys(rows[0]);
+    // Collect all unique headers from all rows
+    const headerSet = new Set<string>();
+    rows.forEach(row => {
+        Object.keys(row).forEach(key => headerSet.add(key));
+    });
+    const headers = Array.from(headerSet);
 
     // Build CSV content
     const csvLines = [
@@ -97,23 +102,17 @@ export function saveCsv<T extends Record<string, any>>(
         )
     ];
 
-    const csvContent = csvLines.join("\n");
-    return csvContent;
+    return csvLines.join("\n");
 }
 
-// Escape CSV fields
+// Simple CSV escaping
 function escapeCsvValue(value: any): string {
     if (value == null) return "";
-    if (typeof value === "object") {
-        value = JSON.stringify(value);
-    }
     const str = String(value);
-
-    // Wrap in quotes if needed
-    if (str.includes(",") || str.includes('"') || str.includes("\n")) {
+    // Escape quotes
+    if (str.includes('"') || str.includes(',') || str.includes('\n')) {
         return `"${str.replace(/"/g, '""')}"`;
     }
-
     return str;
 }
 
@@ -145,4 +144,31 @@ export function xmlNodeToObjects(
 
     return obj;
   });
+}
+/**
+ * Download an array of objects as a CSV file
+ * @param csvData Array of objects representing CSV rows
+ */
+export const  downloadCSV = (csvData: CSVRow[]): void =>{
+  if (!csvData.length) {
+    showStatus('No data to download', 'error');
+    return;
+  }
+
+  const csvContent = stringCsv(csvData);
+
+  // Create Blob and download link
+  const blob: Blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+  const link: HTMLAnchorElement = document.createElement('a');
+  link.href = URL.createObjectURL(blob);
+  link.download = `data_${Date.now()}.csv`;
+  link.click();
+
+  // Clean up object URL after download
+  setTimeout(() => URL.revokeObjectURL(link.href), 100);
+}
+
+
+function showStatus(message: string, type: 'error' | 'success' | 'info'): void {
+  console.log(`[${type.toUpperCase()}] ${message}`);
 }
