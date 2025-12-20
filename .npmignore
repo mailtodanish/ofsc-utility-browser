@@ -1,0 +1,10 @@
+src/
+test/
+tsconfig.json
+jest.config.js
+.gitignore
+.coverage
+*.test.ts
+*.spec.ts
+*.ts
+random.txt
