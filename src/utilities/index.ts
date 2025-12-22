@@ -14,6 +14,46 @@ import { CSVRow } from '../types';
  *
  * @returns {Promise<{ data: any; token: string }>} A promise which resolves to an object containing the parsed JSON data and the latest OAuth token.
  */
+
+export const patchWithRetry = async (
+  url: string,
+  clientId: string,
+  clientSecret: string,
+  instanceUrl: string,
+  token: string,
+  payload: any
+): Promise<{ data: any; token: string }> => {
+
+  const doPost = async (bearer: string) => {
+    return fetch(url, {
+      method: "PATCH",
+      headers: {
+        Authorization: `Bearer ${bearer}`,
+        Accept: "application/json",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(payload)
+    });
+  };
+
+  let response = await doPost(token);
+
+  /* ---------- 401: refresh token ONCE per call ---------- */
+  if (response.status === 401) {
+    console.warn("⚠️ Token expired — renewing token…");
+    token = await getOAuthToken(clientId, clientSecret, instanceUrl);
+    response = await doPost(token);
+  }
+
+  if (!response.ok) {
+    throw new Error(`HTTP ${response.status}: ${await response.text()}`);
+  }
+
+  return {
+    data: await response.json(),
+    token
+  };
+};
 export const fetchWithRetry = async (
     url: string,
     clientId: string,

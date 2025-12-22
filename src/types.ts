@@ -52,3 +52,8 @@ export interface EventResponse {
   nextPage?: string;
   items?: any[];
 }
+
+export interface FetchWithRetryResult {
+  data: ResourceResponse;
+  token: string;
+}

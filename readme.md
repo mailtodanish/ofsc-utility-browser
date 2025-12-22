@@ -20,8 +20,18 @@ A lightweight utility library for interacting with **Oracle Field Service Cloud 
 ## Specific version (recommended)
 
 ```html
-<script src="https://unpkg.com/ofsc-utility-browser@1.0.0/dist/ofsc-utilities-min.js"></script>
+<script src="https://unpkg.com/ofsc-utility-browser@1.0.1/dist/ofsc-utilities-min.js"></script>
 ```
+## Functions implemented
+
+  ### Activity
+    - getAllActivities(clientId: string,clientSecret: string,instanceUrl: string,resources: string,dateFrom: string,dateTo: string,q?: string,fields?: string,ncludeNonScheduled: boolean = false ) 
+    - getActivitybyId( clientId: string, clientSecret: string,instanceUrl: string, activityId: number, token: string=")
+    - updateResource(clientId: string, clientSecret: string, instanceUrl: string, resourceId: string, payload: any, token: string = "")
+    - AllResources(clientId: string,clientSecret: string,instanceUrl: string,initialToken = "")
+  
+  ### Post Clone
+     - resetResourcesEmail(clientId: string,clientSecret: string,instanceUrl: string,newdomain: string = "noreply",token: string = "")
 
 ### Uses
 
@@ -72,8 +82,7 @@ A lightweight utility library for interacting with **Oracle Field Service Cloud 
         resourceId: item.resourceId,
       }));
 
-      window.OFSC.Utilities.downloadCSV(csvData);
-      showStatus(`Downloaded ${csvData.length} records`, "success");
+      window.OFSC.Utilities.downloadCSV(csvData);     
     } catch (err) {
       console.error(err);
       showStatus(err.message || "Failed", "error");
