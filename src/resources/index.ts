@@ -179,7 +179,7 @@ export async function resetResourcesEmail(
 
             email = resource.email.replace(/@.*/, `@${newdomain}`);
 
-            console.log(`Updating email for ${resource.resourceId} (${resource.email} -> ${email})`);
+            console.log(`Updating email for ${resource.resourceId} (${resource.email} -> ${email}) on ${instanceUrl}`);
             const payload = {
                 email: email
             };
