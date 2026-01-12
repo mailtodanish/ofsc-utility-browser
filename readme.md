@@ -29,6 +29,7 @@ A lightweight utility library for interacting with **Oracle Field Service Cloud 
     - getActivitybyId( clientId: string, clientSecret: string,instanceUrl: string, activityId: number, token: string=")
     - updateResource(clientId: string, clientSecret: string, instanceUrl: string, resourceId: string, payload: any, token: string = "")
     - AllResources(clientId: string,clientSecret: string,instanceUrl: string,initialToken = "")
+    - AllUsers(clientId: string,clientSecret: string,instanceUrl: string,initialToken = "")
   
   ### Post Clone
      - resetResourcesEmail(clientId: string,clientSecret: string,instanceUrl: string,newdomain: string = "noreply",token: string = "")
@@ -92,6 +93,18 @@ A lightweight utility library for interacting with **Oracle Field Service Cloud 
     }
   });
 </script>
+```
+
+```js
+// Download all Resources
+const res = await window.OFSC.Resources.AllResources(
+        clientID,
+        clientSecret,
+        instanceId,
+        ""
+      );
+      
+      window.OFSC.Utilities.downloadCSV(res);
 ```
 
 ## License

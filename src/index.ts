@@ -1,11 +1,12 @@
 import * as Activity from "./activities";
 import * as OauthTokenService from "./oauthTokenService";
 import * as Resources from "./resources";
+import * as Users from "./users";
 import * as Utilities from "./utilities";
 import { downloadCSV } from "./utilities";
 
 // Export grouped namespaces
-export { Activity, OauthTokenService, Resources, Utilities };
+export { Activity, OauthTokenService, Resources, Users, Utilities };
 
 // Export types
   export * from "./types";
@@ -16,5 +17,6 @@ export default {
   OauthTokenService,
   Utilities,
   Resources,
-  downloadCSV
+  downloadCSV,
+  Users
 };
