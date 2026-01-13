@@ -107,6 +107,18 @@ const res = await window.OFSC.Resources.AllResources(
       window.OFSC.Utilities.downloadCSV(res);
 ```
 
+```js
+// Download all Resources's work skills
+const res = await window.OFSC.Resources.getAllResourcesWorkSkills(
+        clientID,
+        clientSecret,
+        instanceId,
+        ""
+      );
+      
+      window.OFSC.Utilities.downloadCSV(res);
+```
+
 ## License
 
 MIT

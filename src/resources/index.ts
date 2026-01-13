@@ -208,3 +208,80 @@ export async function resetResourcesEmail(
 
     return updatedResources;
 }
+
+export async function getworkSkillsOfResource(
+    clientId: string,
+    clientSecret: string,
+    instanceUrl: string,
+    resourceId: number,
+    token: string = ""
+
+): Promise<{ token: string; data: any }> {
+
+    const url = `https://${instanceUrl}.fs.ocs.oraclecloud.com/rest/ofscCore/v1/resources/${encodeURIComponent(resourceId)}/workSkills`;
+
+    console.log(`➡️ Fetching workSkills by resourceID: ${resourceId}`);
+
+    const response = await fetchWithRetry(url, clientId, clientSecret, instanceUrl, token);
+
+    return {
+        token: response.token,
+        data: response.data.items
+    };
+
+}
+
+export async function getAllResourcesWorkSkills(
+    clientId: string,
+    clientSecret: string,
+    instanceUrl: string,
+    token: string = ""
+): Promise<any[]> {
+
+    const csv: any[] = [];
+
+    // API call counter
+    let apiCallCount = 0;
+
+    const CALL_LIMIT = 50;
+    const WAIT_MS = 5_000; // 10 seconds
+
+    // sleep helper
+    const sleep = (ms: number) =>
+        new Promise(resolve => setTimeout(resolve, ms));
+   
+    const resources = await AllResources(clientId, clientSecret, instanceUrl, token);
+   
+    for (const resource of resources) {
+
+        apiCallCount++;
+
+        // wait after every 50 API calls
+        if (apiCallCount % CALL_LIMIT === 0) {
+            console.warn(`⏳ ${apiCallCount} API calls reached. Waiting ${WAIT_MS / 1000}s...`);
+            await sleep(WAIT_MS);
+        }
+
+        const workSkills = await getworkSkillsOfResource(
+            clientId,
+            clientSecret,
+            instanceUrl,
+            resource.resourceId,
+            token
+        );
+
+        for (const workSkill of workSkills.data) {
+            csv.push({
+                resourceId: resource.resourceId,
+                name: resource.name,
+                parentResourceId: resource.parentResourceId,
+                ...workSkill.workSkill
+            });
+        }
+
+        token = workSkills.token;
+
+    }
+
+    return csv;
+}
