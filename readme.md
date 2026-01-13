@@ -30,6 +30,7 @@ A lightweight utility library for interacting with **Oracle Field Service Cloud 
     - updateResource(clientId: string, clientSecret: string, instanceUrl: string, resourceId: string, payload: any, token: string = "")
     - AllResources(clientId: string,clientSecret: string,instanceUrl: string,initialToken = "")
     - AllUsers(clientId: string,clientSecret: string,instanceUrl: string,initialToken = "")
+    - getAllResourcesWorkSkills(clientId: string,clientSecret: string,instanceUrl: string,initialToken = "")
   
   ### Post Clone
      - resetResourcesEmail(clientId: string,clientSecret: string,instanceUrl: string,newdomain: string = "noreply",token: string = "")

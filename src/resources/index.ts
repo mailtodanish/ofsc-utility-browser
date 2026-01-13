@@ -235,7 +235,8 @@ export async function getAllResourcesWorkSkills(
     clientId: string,
     clientSecret: string,
     instanceUrl: string,
-    token: string = ""
+    token: string = "",
+    filterByresourceType: string = ""
 ): Promise<any[]> {
 
     const csv: any[] = [];
@@ -249,16 +250,33 @@ export async function getAllResourcesWorkSkills(
     // sleep helper
     const sleep = (ms: number) =>
         new Promise(resolve => setTimeout(resolve, ms));
-   
+
     const resources = await AllResources(clientId, clientSecret, instanceUrl, token);
-   
-    for (const resource of resources) {
+
+    const parentIds = new Set(
+        resources
+            .filter(item => item.parentResourceId !== null)            
+            .map(item => item.parentResourceId)
+    );
+
+    let result = resources.filter(item => !parentIds.has(item.resourceId)).filter(item => item.status === "active").filter(item => item.resourceType !== "Bucket");
+
+    if(filterByresourceType != ""){
+        result = result.filter(item => item.resourceType === filterByresourceType);
+    }
+
+    console.log(`➡️ Number of resourceID: ${result.length}`);
+    const numberOfResources = result.length;
+
+    for (const resource of result) {
+
+        if (resource.status !== "active") continue;
 
         apiCallCount++;
 
         // wait after every 50 API calls
         if (apiCallCount % CALL_LIMIT === 0) {
-            console.warn(`⏳ ${apiCallCount} API calls reached. Waiting ${WAIT_MS / 1000}s...`);
+            console.warn(`⏳ ${apiCallCount} API calls reached(Total: ${numberOfResources}). Waiting ${WAIT_MS / 1000}s...`);
             await sleep(WAIT_MS);
         }
 
@@ -275,7 +293,9 @@ export async function getAllResourcesWorkSkills(
                 resourceId: resource.resourceId,
                 name: resource.name,
                 parentResourceId: resource.parentResourceId,
-                ...workSkill.workSkill
+                resourceStatus: resource.status,
+                resourceType: resource.resourceType,
+                ...workSkill
             });
         }
 
