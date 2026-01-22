@@ -1,8 +1,10 @@
 import { DOMParser } from "xmldom";
 import { getOAuthToken } from "../oauthTokenService";
+import * as localStorage from "./indexedDB.service";
 
 import { CSVRow } from '../types';
 
+export { localStorage };
 /**
  * Fetches a URL with retry logic for expired tokens.
  *
