@@ -14,6 +14,7 @@ export async function AllResources(
     clientId: string,
     clientSecret: string,
     instanceUrl: string,
+    filterByresourceType: string = "",
     initialToken = ""
 ): Promise<any[]> {
 
@@ -85,7 +86,7 @@ export async function AllResources(
             res.token
         );
 
-        return [...items, ...nextItems];
+        return [...items, ...nextItems].filter(item => item.resourceType === filterByresourceType);
     };
 
     return fetchResources(0, initialToken);

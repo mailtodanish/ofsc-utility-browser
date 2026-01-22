@@ -1,6 +1,6 @@
 /* indexedDb.service.ts */
 
-const DB_NAME = "OFSC_Plugin";
+const DB_NAME = "OFSC_Plugin_npm_browser";
 const DB_VERSION = 1;
 const STORE_NAME = "plugin-items";
 
