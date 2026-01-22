@@ -1,13 +1,13 @@
 {
   "name": "ofsc-utility-browser",
-  "version": "1.0.14",
+  "version": "1.0.15",
   "description": "A wrapper for Oracle Field Service REST API for browser cdn for html",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "build": "rollup -c",
+    "build": " rollup -c",
     "build:link": "tsc && npm link",
-    "prepublishOnly": "npm run build",
+    "prepublishOnly": "source github_push.sh && npm run build",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
