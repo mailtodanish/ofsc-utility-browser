@@ -85,8 +85,10 @@ export async function AllResources(
             offset + totalFetched,
             res.token
         );
-
-        return [...items, ...nextItems].filter(item => item.resourceType === filterByresourceType);
+        if(filterByresourceType !== "") {
+           return [...items, ...nextItems].filter(item => item.resourceType === filterByresourceType && item.status === "active");
+        }
+        return [...items, ...nextItems];
     };
 
     return fetchResources(0, initialToken);
