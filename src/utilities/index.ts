@@ -200,7 +200,7 @@ export function xmlNodeToObjects(
  * Download an array of objects as a CSV file
  * @param csvData Array of objects representing CSV rows
  */
-export const downloadCSV = (csvData: CSVRow[]): void => {
+export const downloadCSV = (csvData: CSVRow[], name: string="data"): void => {
   if (!csvData.length) {
     showStatus('No data to download', 'error');
     return;
@@ -212,7 +212,7 @@ export const downloadCSV = (csvData: CSVRow[]): void => {
   const blob: Blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
   const link: HTMLAnchorElement = document.createElement('a');
   link.href = URL.createObjectURL(blob);
-  link.download = `data_${Date.now()}.csv`;
+  link.download = `${name}_${Date.now()}.csv`;
   link.click();
 
   // Clean up object URL after download

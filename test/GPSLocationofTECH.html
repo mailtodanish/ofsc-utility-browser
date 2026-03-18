@@ -117,9 +117,19 @@
     </form>
 
     <div id="status" class="status"></div>
-</div>
+    <p class="subtitle" style="margin-top: 24px; font-size: 0.9em; color: #666;">
+            If a CORS error occurs, please update the domain in
+            <span style="color: #e63946; font-weight: 600;">OFSC Application Settings</span>
+            — Allow Cross-Origin Resource Sharing (CORS) from the following web domains.
+        </p>
 
-<script src="http://192.168.1.5:8081/ofsc-utilities-min.js?dev=1"></script>
+        <p class="subtitle" style="margin-top: 12px; font-size: 0.9em; color: #666;">
+            Developed by mohammadahshan_d@infosys.com
+        </p>
+</div>
+<!-- <script src="https://unpkg.com/ofsc-utility-browser@1.0.18/dist/ofsc-utilities-min.js?dev4"></script> -->
+   
+<script src="http://192.168.1.5:8081/ofsc-utilities-min.js?dev=12"></script>
 
 <script>
 const form = document.getElementById('ofscForm');
@@ -162,26 +172,6 @@ function formatDate(date) {
     fromDateInput.max = formatDate(today);
 })();
 
-function downloadCSV(data) {
-    if (!data.length) {
-        showStatus("No data to download", "error");
-        return;
-    }
-
-    const keys = Object.keys(data[0]);
-    const csv = [
-        keys.join(","),
-        ...data.map(row => keys.map(k => `"${row[k] ?? ""}"`).join(","))
-    ].join("\n");
-
-    const blob = new Blob([csv], { type: "text/csv" });
-    const url = URL.createObjectURL(blob);
-
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = "resource_position_history.csv";
-    a.click();
-}
 
 form.addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -220,12 +210,11 @@ form.addEventListener('submit', async (e) => {
             toDate
         );
 
-        console.log("Raw:", res);
+        window.OFSC.Utilities.downloadCSV(res, resourceId);
 
         showStatus(`Downloaded ${res.length} records`, "success");
 
-        // ✅ Download CSV
-        downloadCSV(res);
+       
 
     } catch (err) {
         console.error(err);
