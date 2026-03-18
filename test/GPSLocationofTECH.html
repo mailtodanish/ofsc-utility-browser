@@ -127,7 +127,7 @@
             Developed by mohammadahshan_d@infosys.com
         </p>
 </div>
-<!-- <script src="https://unpkg.com/ofsc-utility-browser@1.0.18/dist/ofsc-utilities-min.js?dev4"></script> -->
+<!-- <script src="https://unpkg.com/ofsc-utility-browser@1.0.19/dist/ofsc-utilities-min.js?dev4"></script> -->
    
 <script src="http://192.168.1.5:8081/ofsc-utilities-min.js?dev=12"></script>
 
@@ -189,7 +189,6 @@ form.addEventListener('submit', async (e) => {
         const fromDate = fromDateInput.value;
         const toDate = toDateInput.value;
 
-        // ✅ Validation
         if (!fromDate || !toDate) {
             throw new Error("Please select both From Date and To Date");
         }
@@ -200,7 +199,11 @@ form.addEventListener('submit', async (e) => {
 
         console.log("Calling API with:", { fromDate, toDate });
 
-        // ✅ CALL UPDATED FUNCTION
+        const technicians = await window.OFSC.Resources.AllResources(clientID, clientSecret, instanceId,"Technician", "");
+       for(let i=0;i<technicians.length;i++){
+        console.log(technicians[i].resourceId);
+       
+      
         let res = await window.OFSC.GPS.resourcePositionHistoryRange(
             clientID,
             clientSecret,
@@ -212,7 +215,8 @@ form.addEventListener('submit', async (e) => {
 
         window.OFSC.Utilities.downloadCSV(res, resourceId);
 
-        showStatus(`Downloaded ${res.length} records`, "success");
+        showStatus(`Downloaded ${res.length} records for ${resourceId}`, "success");
+       }
 
        
 

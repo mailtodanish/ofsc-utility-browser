@@ -33,6 +33,7 @@ A lightweight utility library for interacting with **Oracle Field Service Cloud 
     - AllResources(clientId: string,clientSecret: string,instanceUrl: string,filterByresourceType="",initialToken = "")
     - AllUsers(clientId: string,clientSecret: string,instanceUrl: string,initialToken = "")
     - getAllResourcesWorkSkills(clientId: string,clientSecret: string,instanceUrl: string,initialToken = "")
+    - resourcePositionHistoryRange( clientID,clientSecret,instanceId,resourceId,fromDate,toDate); // GPS Locations of a technician
 
 ### Post Clone
 
@@ -97,6 +98,18 @@ A lightweight utility library for interacting with **Oracle Field Service Cloud 
     }
   });
 </script>
+```
+
+```js
+// Download all GPS Locations
+const res = await window.OFSC.GPS.resourcePositionHistoryRange(clientID,
+            clientSecret,
+            instanceId,
+            resourceId,
+            fromDate,
+            toDate);
+
+window.OFSC.Utilities.downloadCSV(res);
 ```
 
 ```js

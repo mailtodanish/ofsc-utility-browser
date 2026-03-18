@@ -75,7 +75,7 @@ export async function AllResources(
         const { items, totalResults } = res.data;
         const totalFetched = items.length;
 
-        console.log(`Received ${totalFetched} items (Total: ${offset + totalFetched})`);
+        console.log(`Resources: Received ${totalFetched} items (Total: ${offset + totalFetched})`);
 
         if (offset + totalFetched >= totalResults) {
             return items;
