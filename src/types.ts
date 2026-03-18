@@ -19,6 +19,7 @@ export interface ResourceResponse {
   offset: number;
   limit: number;
   totalResults: number;
+  files?: {items: any[]};
 }
 
 export interface Response {

@@ -22,17 +22,20 @@ A lightweight utility library for interacting with **Oracle Field Service Cloud 
 ```html
 <script src="https://unpkg.com/ofsc-utility-browser@1.0.1/dist/ofsc-utilities-min.js"></script>
 ```
+
 ## Functions implemented
 
-  ### Activity
-    - getAllActivities(clientId: string,clientSecret: string,instanceUrl: string,resources: string,dateFrom: string,dateTo: string,q?: string,fields?: string,ncludeNonScheduled: boolean = false ) 
+### Activity
+
+    - getAllActivities(clientId: string,clientSecret: string,instanceUrl: string,resources: string,dateFrom: string,dateTo: string,q?: string,fields?: string,ncludeNonScheduled: boolean = false )
     - getActivitybyId( clientId: string, clientSecret: string,instanceUrl: string, activityId: number, token: string=")
     - updateResource(clientId: string, clientSecret: string, instanceUrl: string, resourceId: string, payload: any, token: string = "")
-    - AllResources(clientId: string,clientSecret: string,instanceUrl: string,initialToken = "")
+    - AllResources(clientId: string,clientSecret: string,instanceUrl: string,filterByresourceType="",initialToken = "")
     - AllUsers(clientId: string,clientSecret: string,instanceUrl: string,initialToken = "")
     - getAllResourcesWorkSkills(clientId: string,clientSecret: string,instanceUrl: string,initialToken = "")
-  
-  ### Post Clone
+
+### Post Clone
+
      - resetResourcesEmail(clientId: string,clientSecret: string,instanceUrl: string,newdomain: string = "noreply",token: string = "")
 
 ### Uses
@@ -74,7 +77,7 @@ A lightweight utility library for interacting with **Oracle Field Service Cloud 
         endDate,
         "status=='pending' and XA_ACTIVITY_NOTES!=''",
         "XA_ACTIVITY_NOTES,status,activityId,activityType,date,resourceId",
-        true
+        true,
       );
 
       const csvData = res.map((item) => ({
@@ -84,7 +87,7 @@ A lightweight utility library for interacting with **Oracle Field Service Cloud 
         resourceId: item.resourceId,
       }));
 
-      window.OFSC.Utilities.downloadCSV(csvData);     
+      window.OFSC.Utilities.downloadCSV(csvData);
     } catch (err) {
       console.error(err);
       showStatus(err.message || "Failed", "error");
@@ -98,26 +101,26 @@ A lightweight utility library for interacting with **Oracle Field Service Cloud 
 
 ```js
 // Download all Resources
-const res = await window.OFSC.Resources.AllResources(
-        clientID,
-        clientSecret,
-        instanceId,
-        ""
-      );
-      
-      window.OFSC.Utilities.downloadCSV(res);
+const res = await window.OFSC.Resources.AllResources(clientID, clientSecret, instanceId,"Technician", "");
+
+window.OFSC.Utilities.downloadCSV(res);
 ```
 
 ```js
 // Download all Resources's work skills
-const res = await window.OFSC.Resources.getAllResourcesWorkSkills(
-        clientID,
-        clientSecret,
-        instanceId,
-        ""
-      );
-      
-      window.OFSC.Utilities.downloadCSV(res);
+const res = await window.OFSC.Resources.getAllResourcesWorkSkills(clientID, clientSecret, instanceId, "");
+
+window.OFSC.Utilities.downloadCSV(res);
+```
+
+```js
+// add / get / remove from local storage
+let resources = await window.OFSC.Utilities.localStorage.get("OFSC_Resources");
+await window.OFSC.Utilities.localStorage.add({
+  id: "OFSC_Resources",
+  value: resources,
+});
+await window.OFSC.Utilities.localStorage.remove("OFSC_Resources");
 ```
 
 ## License
