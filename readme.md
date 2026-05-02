@@ -34,6 +34,7 @@ A lightweight utility library for interacting with **Oracle Field Service Cloud 
     - AllUsers(clientId: string,clientSecret: string,instanceUrl: string,initialToken = "")
     - getAllResourcesWorkSkills(clientId: string,clientSecret: string,instanceUrl: string,initialToken = "")
     - resourcePositionHistoryRange( clientID,clientSecret,instanceId,resourceId,fromDate,toDate); // GPS Locations of a technician
+    - AllDescendantsOfResource(clientId: string,clientSecret: string,instanceUrl: string,resourceId:string, initialToken = "")
 
 ### Post Clone
 
