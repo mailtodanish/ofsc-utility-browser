@@ -25,7 +25,12 @@ A lightweight utility library for interacting with **Oracle Field Service Cloud 
 
 ## Functions implemented
 
-### Activity
+### samples 
+```
+https://github.com/mailtodanish/ofsc-utility-browser/tree/main/sample
+```
+
+### Methods
 
     - getAllActivities(clientId: string,clientSecret: string,instanceUrl: string,resources: string,dateFrom: string,dateTo: string,q?: string,fields?: string,ncludeNonScheduled: boolean = false )
     - getActivitybyId( clientId: string, clientSecret: string,instanceUrl: string, activityId: number, token: string=")
