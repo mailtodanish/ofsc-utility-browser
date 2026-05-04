@@ -95,13 +95,13 @@ export const fetchWithRetry = async (
       token
     };
   }
-
+   console.info (res.status);
   /* ---------- 429: retry with backoff ---------- */
-  if (res.status === 429 && retries > 0) {
+  if (res.status === 429 && retries > 0 || res.status === 422 && retries > 0 ) {
     const retryAfter = res.headers.get("Retry-After");
-    console.log("⚠️ 429 received. Retrying...", retryAfter);
+    console.log("⚠️ 429 / 422 received. Retrying...", retryAfter);
     const delay = retryAfter ? Number(retryAfter) * 1000 : baseDelay;
-    console.warn(`⚠️ 429 received. Retrying in ${delay}ms... (${retries} left)`);
+    console.warn(`⚠️ 429 / 422 received. Retrying in ${delay}ms... (${retries} left)`);
 
     await new Promise(r => setTimeout(r, delay));
 
@@ -223,3 +223,43 @@ export const downloadCSV = (csvData: CSVRow[], name: string="data"): void => {
 function showStatus(message: string, type: 'error' | 'success' | 'info'): void {
   console.log(`[${type.toUpperCase()}] ${message}`);
 }
+
+type DateRange = {
+    start: string;
+    end: string;
+};
+
+const formatDate = (date: Date): string => {
+    return date.toISOString().split('T')[0];
+};
+
+
+export const getLast90DaysChunks = (): DateRange[] => {
+    const result: DateRange[] = [];
+
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    const startBase = new Date(today);
+    startBase.setDate(today.getDate() - 89);
+
+    for (let i = 0; i < 3; i++) {
+        const rangeStart = new Date(startBase);
+        rangeStart.setDate(startBase.getDate() + i * 30);
+
+        const rangeEnd = new Date(rangeStart);
+        rangeEnd.setDate(rangeStart.getDate() + 29);
+
+        // clamp end to today (important for safety)
+        if (rangeEnd > today) {
+            rangeEnd.setTime(today.getTime());
+        }
+
+        result.push({
+            start: formatDate(rangeStart),
+            end: formatDate(rangeEnd)
+        });
+    }
+
+    return result;
+};

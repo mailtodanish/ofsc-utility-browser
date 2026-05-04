@@ -1,6 +1,5 @@
 import { getOAuthToken } from "../oauthTokenService";
-import { fetchWithRetry } from "../utilities";
-
+import { fetchWithRetry, getLast90DaysChunks } from "../utilities";
 // Validate YYYY-MM-DD format
 const isValidDate = (date: string): boolean =>
     /^\d{4}-\d{2}-\d{2}$/.test(date);
@@ -86,7 +85,7 @@ export async function getActivitybyId(
     clientSecret: string,
     instanceUrl: string,
     activityId: number,
-    token: string=""
+    token: string = ""
 
 ): Promise<{ token: string; data: any }> {
 
@@ -96,9 +95,103 @@ export async function getActivitybyId(
 
     const response = await fetchWithRetry(url, clientId, clientSecret, instanceUrl, token);
 
-    return    response;
+    return response;
 
 }
 
+
+
+type ActivityResponse = {
+    data: any[];
+    token: string;
+};
+
+const buildUrl = (
+    instanceUrl: string,
+    endpoint: string,
+    params: Record<string, string | boolean>
+) => {
+    const query = new URLSearchParams(
+        Object.entries(params).reduce((acc, [key, value]) => {
+            acc[key] = String(value);
+            return acc;
+        }, {} as Record<string, string>)
+    );
+
+    return `https://${instanceUrl}.fs.ocs.oraclecloud.com/rest/ofscCore/v1/${endpoint}?${query}`;
+};
+
+export async function searchActivitybyQueryParameter(
+    clientId: string,
+    clientSecret: string,
+    instanceUrl: string,
+    parentResources: string,
+    q: string,
+    fields: string,
+    token: string = ""
+): Promise<ActivityResponse> {
+    const result: ActivityResponse = {
+        data: [],
+        token: ""
+    };
+
+    const dateRanges = getLast90DaysChunks();
+
+    console.log(`Date chunks: ${JSON.stringify(dateRanges, undefined, 2)}`);
+
+    for (const { start, end } of dateRanges) {
+        const url = buildUrl(instanceUrl, "activities", {
+            q,
+            resources: parentResources,
+            dateFrom: start,
+            dateTo: end,
+            fields:fields
+        });
+        console.log(`➡️ Fetching activity ${q} by query(Scheduled): ${url}`);
+        const response = await fetchWithRetry(
+            url,
+            clientId,
+            clientSecret,
+            instanceUrl,
+            token
+        );
+
+        token = response.token;
+
+        const items = response?.data?.items ?? [];
+
+        if (items.length > 0) {
+            result.data.push(...items);
+            result.token = response.token;
+            return result;
+        }
+    }
+    
+    const nonScheduledUrl = buildUrl(instanceUrl, "activities", {
+        q,
+        resources: parentResources,
+        includeNonScheduled: true,
+        fields:fields
+    });
+    console.log(`➡️ Fetching activity ${q} by query(NonScheduled): ${nonScheduledUrl}`);
+
+    const nonScheduledResponse = await fetchWithRetry(
+        nonScheduledUrl,
+        clientId,
+        clientSecret,
+        instanceUrl,
+        token
+    );
+    token = nonScheduledResponse.token;
+    const nonScheduledItems = nonScheduledResponse?.data?.items ?? [];
+
+    result.token = nonScheduledResponse.token;
+    if (nonScheduledItems.length > 0) {
+        result.data.push(...nonScheduledItems);
+        result.token = nonScheduledResponse.token;
+    }
+
+    return result;
+}
 
 

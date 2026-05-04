@@ -25,7 +25,7 @@ A lightweight utility library for interacting with **Oracle Field Service Cloud 
 
 ## Functions implemented
 
-### samples 
+### Samples 
 ```
 https://github.com/mailtodanish/ofsc-utility-browser/tree/main/sample
 ```
