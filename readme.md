@@ -40,6 +40,15 @@ https://github.com/mailtodanish/ofsc-utility-browser/tree/main/sample
     - getAllResourcesWorkSkills(clientId: string,clientSecret: string,instanceUrl: string,initialToken = "")
     - resourcePositionHistoryRange( clientID,clientSecret,instanceId,resourceId,fromDate,toDate); // GPS Locations of a technician
     - AllDescendantsOfResource(clientId: string,clientSecret: string,instanceUrl: string,resourceId:string, initialToken = "")
+    - searchActivitybyQueryParameter(
+                    clientId,
+                    secret,
+                    instance,
+                    parentResources,
+                    `wo_number==${taskNum}`,
+                    'resourceId,date,status,activityType',
+                    token
+                )
 
 ### Post Clone
 
