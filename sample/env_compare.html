@@ -33,52 +33,53 @@
             min-height: 100vh;
             overflow-x: hidden;
         }
+
         /* Toast */
-.toast-container {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    z-index: 9999;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
+        .toast-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
 
-.toast {
-    min-width: 220px;
-    padding: 12px 16px;
-    border-radius: 6px;
-    font-family: 'Space Mono', monospace;
-    font-size: 12px;
-    color: #fff;
-    background: #222;
-    border: 1px solid #444;
-    opacity: 0;
-    transform: translateX(40px);
-    animation: slideIn 0.3s forwards;
-}
+        .toast {
+            min-width: 220px;
+            padding: 12px 16px;
+            border-radius: 6px;
+            font-family: 'Space Mono', monospace;
+            font-size: 12px;
+            color: #fff;
+            background: #222;
+            border: 1px solid #444;
+            opacity: 0;
+            transform: translateX(40px);
+            animation: slideIn 0.3s forwards;
+        }
 
-.toast.success {
-    border-left: 4px solid var(--success);
-}
+        .toast.success {
+            border-left: 4px solid var(--success);
+        }
 
-.toast.error {
-    border-left: 4px solid var(--accent2);
-}
+        .toast.error {
+            border-left: 4px solid var(--accent2);
+        }
 
-@keyframes slideIn {
-    to {
-        opacity: 1;
-        transform: translateX(0);
-    }
-}
+        @keyframes slideIn {
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
 
-@keyframes fadeOut {
-    to {
-        opacity: 0;
-        transform: translateX(40px);
-    }
-}
+        @keyframes fadeOut {
+            to {
+                opacity: 0;
+                transform: translateX(40px);
+            }
+        }
 
         /* Animated grid background */
         body::before {
@@ -110,22 +111,24 @@
         }
 
         .loader {
-    width: 16px;
-    height: 16px;
-    border: 2px solid rgba(255,255,255,0.2);
-    border-top: 2px solid #fff;
-    border-radius: 50%;
-    animation: spin 0.6s linear infinite;
-}
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-top: 2px solid #fff;
+            border-radius: 50%;
+            animation: spin 0.6s linear infinite;
+        }
 
-@keyframes spin {
-    to { transform: rotate(360deg); }
-}
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
 
-.btn-compare.loading .btn-inner {
-    opacity: 0.7;
-    pointer-events: none;
-}
+        .btn-compare.loading .btn-inner {
+            opacity: 0.7;
+            pointer-events: none;
+        }
 
         .orb2 {
             width: 350px;
@@ -754,7 +757,7 @@
                     </div>
                     <div class="field-group">
                         <label class="field-label">Secret ID</label>
-                        <input class="field-input" id="e1-secret" type="password" placeholder="••••••••••••" value ="">
+                        <input class="field-input" id="e1-secret" type="password" placeholder="••••••••••••" value="">
                     </div>
                     <div class="field-group">
                         <label class="field-label">Instance ID</label>
@@ -814,18 +817,18 @@
                     <div class="check-box"><span class="check-mark">✓</span></div>
                     <span class="check-text">resourceTypes</span>
                 </label>
-               
+
             </div>
         </div>
 
         <!-- Button -->
         <div class="compare-wrap">
             <button class="btn-compare" id="compareBtn" onclick="runCompare()">
-    <div class="btn-inner" id="btnInner">
-        <span class="btn-icon" id="btnIcon">⇄</span>
-        <span id="btnText">Compare Instances</span>
-    </div>
-</button>
+                <div class="btn-inner" id="btnInner">
+                    <span class="btn-icon" id="btnIcon">⇄</span>
+                    <span id="btnText">Compare Instances</span>
+                </div>
+            </button>
 
         </div>
         <div class="error-msg" id="errorMsg"></div>
@@ -844,8 +847,8 @@
     <div class="toast-container" id="toastContainer"></div>
 
     <!-- <script src="http://192.168.1.4:8081/ofsc-utilities-min.js?dedodv110dsd1sd0=14s2w3"></script> -->
-<script src="https://unpkg.com/ofsc-utility-browser/dist/ofsc-utilities-min.js?dev14"></script>
-   
+    <script src="https://unpkg.com/ofsc-utility-browser/dist/ofsc-utilities-min.js?dev14"></script>
+
 
     <script>
         // Checkbox toggle
@@ -858,19 +861,19 @@
         });
 
         function showToast(message, type = "success", duration = 6000) {
-    const container = document.getElementById("toastContainer");
+            const container = document.getElementById("toastContainer");
 
-    const toast = document.createElement("div");
-    toast.className = `toast ${type}`;
-    toast.textContent = message;
+            const toast = document.createElement("div");
+            toast.className = `toast ${type}`;
+            toast.textContent = message;
 
-    container.appendChild(toast);
+            container.appendChild(toast);
 
-    setTimeout(() => {
-        toast.style.animation = "fadeOut 0.3s forwards";
-        setTimeout(() => toast.remove(), 5000);
-    }, duration);
-}
+            setTimeout(() => {
+                toast.style.animation = "fadeOut 0.3s forwards";
+                setTimeout(() => toast.remove(), 5000);
+            }, duration);
+        }
 
         function showError(msg) {
             const el = document.getElementById('errorMsg');
@@ -884,9 +887,9 @@
 
         async function runCompare() {
 
-             const btn = document.getElementById('compareBtn');
-    const btnText = document.getElementById('btnText');
-    const btnIcon = document.getElementById('btnIcon');
+            const btn = document.getElementById('compareBtn');
+            const btnText = document.getElementById('btnText');
+            const btnIcon = document.getElementById('btnIcon');
 
             const e1Client = document.getElementById('e1-client').value.trim();
             const e1Secret = document.getElementById('e1-secret').value.trim();
@@ -895,7 +898,7 @@
             const e2Secret = document.getElementById('e2-secret').value.trim();
             const e2Instance = document.getElementById('e2-instance').value.trim();
 
-            
+
 
 
             if (!e1Instance || !e2Instance) {
@@ -911,11 +914,11 @@
 
 
 
-            try { 
+            try {
                 btn.classList.add('loading');
-    btnText.textContent = "Comparing...";
-    btnIcon.innerHTML = '<div class="loader"></div>';
-    btn.disabled = true;
+                btnText.textContent = "Comparing...";
+                btnIcon.innerHTML = '<div class="loader"></div>';
+                btn.disabled = true;
 
 
                 const resourceTypesChecked = document.querySelector(
@@ -925,28 +928,28 @@
                 if (resourceTypesChecked) {
                     console.log("ActivityTypeChecked is checked");
                     const resEnv1 = await window.OFSC.MetaData.AllResourceType(
-                    e1Client,
-                    e1Secret,
-                    e1Instance,
-                    ""
-                );
-               
-                const resEnv2 = await window.OFSC.MetaData.AllResourceType(
-                    e2Client,
-                    e2Secret,
-                    e2Instance,
-                    ""
-                );
-                
-                const error = await window.OFSC.MetaData.deepCompareResourceTypes(resEnv1, resEnv2, e1Instance, e2Instance);
-                if(error.length > 0){
-                    window.OFSC.Utilities.downloadCSV(error, "resourceTypes");
-                     showToast("Resource Types comparison downloaded");
-                }else{
-                    showToast("Resource Types are same in both environments");
-                }
-                 
-                
+                        e1Client,
+                        e1Secret,
+                        e1Instance,
+                        ""
+                    );
+
+                    const resEnv2 = await window.OFSC.MetaData.AllResourceType(
+                        e2Client,
+                        e2Secret,
+                        e2Instance,
+                        ""
+                    );
+
+                    const error = await window.OFSC.MetaData.deepCompareResourceTypes(resEnv1, resEnv2, e1Instance, e2Instance);
+                    if (error.length > 0) {
+                        window.OFSC.Utilities.downloadCSV(error, "resourceTypes");
+                        showToast("Resource Types comparison downloaded");
+                    } else {
+                        showToast("Resource Types are same in both environments");
+                    }
+
+
 
                 } else {
                     console.log("Properties is NOT checked");
@@ -962,28 +965,28 @@
                 if (ActivityTypeChecked) {
                     console.log("ActivityTypeChecked is checked");
                     const resEnv1 = await window.OFSC.MetaData.ActivityType(
-                    e1Client,
-                    e1Secret,
-                    e1Instance,
-                    ""
-                );
-               
-                const resEnv2 = await window.OFSC.MetaData.ActivityType(
-                    e2Client,
-                    e2Secret,
-                    e2Instance,
-                    ""
-                );
-                console.error(JSON.stringify(resEnv2, null, 2));
-                const error = await window.OFSC.MetaData.deepCompareActivityTypes(resEnv1, resEnv2, e1Instance, e2Instance);
-                 
+                        e1Client,
+                        e1Secret,
+                        e1Instance,
+                        ""
+                    );
 
-                  if(error.length > 0){
-                   window.OFSC.Utilities.downloadCSV(error, "ActivityType");
-                     showToast("ActivityType comparison downloaded");
-                }else{
-                    showToast("ActivityType are same in both environments");
-                }
+                    const resEnv2 = await window.OFSC.MetaData.ActivityType(
+                        e2Client,
+                        e2Secret,
+                        e2Instance,
+                        ""
+                    );
+                    console.error(JSON.stringify(resEnv2, null, 2));
+                    const error = await window.OFSC.MetaData.deepCompareActivityTypes(resEnv1, resEnv2, e1Instance, e2Instance);
+
+
+                    if (error.length > 0) {
+                        window.OFSC.Utilities.downloadCSV(error, "ActivityType");
+                        showToast("ActivityType comparison downloaded");
+                    } else {
+                        showToast("ActivityType are same in both environments");
+                    }
 
                 } else {
                     console.log("Properties is NOT checked");
@@ -997,28 +1000,28 @@
                 if (ActivityTypeGroupsChecked) {
                     console.log("ActivityTypeGroupsChecked is checked");
                     const resEnv1 = await window.OFSC.MetaData.ActivityTypeGroups(
-                    e1Client,
-                    e1Secret,
-                    e1Instance,
-                    ""
-                );
-               
-                const resEnv2 = await window.OFSC.MetaData.ActivityTypeGroups(
-                    e2Client,
-                    e2Secret,
-                    e2Instance,
-                    ""
-                );
-                console.error(JSON.stringify(resEnv2, null, 2));
-                const error = await window.OFSC.MetaData.deepCompareActivityGroups(resEnv1, resEnv2, e1Instance, e2Instance);
-                 
-                 
-                  if(error.length > 0){
-                   window.OFSC.Utilities.downloadCSV(error, "ActivityTypeGroups");
-                     showToast("ActivityTypeGroups comparison downloaded");
-                }else{
-                    showToast("ActivityTypeGroups are same in both environments");
-                }
+                        e1Client,
+                        e1Secret,
+                        e1Instance,
+                        ""
+                    );
+
+                    const resEnv2 = await window.OFSC.MetaData.ActivityTypeGroups(
+                        e2Client,
+                        e2Secret,
+                        e2Instance,
+                        ""
+                    );
+                    console.error(JSON.stringify(resEnv2, null, 2));
+                    const error = await window.OFSC.MetaData.deepCompareActivityGroups(resEnv1, resEnv2, e1Instance, e2Instance);
+
+
+                    if (error.length > 0) {
+                        window.OFSC.Utilities.downloadCSV(error, "ActivityTypeGroups");
+                        showToast("ActivityTypeGroups comparison downloaded");
+                    } else {
+                        showToast("ActivityTypeGroups are same in both environments");
+                    }
 
                 } else {
                     console.log("Properties is NOT checked");
@@ -1031,45 +1034,44 @@
                 if (propertiesChecked) {
                     console.log("Properties is checked");
                     const resEnv1 = await window.OFSC.MetaData.AllProperties(
-                    e1Client,
-                    e1Secret,
-                    e1Instance,
-                    ""
-                );
-               
-                const resEnv2 = await window.OFSC.MetaData.AllProperties(
-                    e2Client,
-                    e2Secret,
-                    e2Instance,
-                    ""
-                );
-                console.error(JSON.stringify(resEnv2, null, 2));
-                const error = await window.OFSC.MetaData.compareProperties(resEnv1, resEnv2, e1Instance, e2Instance);
-                
+                        e1Client,
+                        e1Secret,
+                        e1Instance,
+                        ""
+                    );
 
-                 if(error.length > 0){
-                    window.OFSC.Utilities.downloadCSV(error, "Properties");
-                     showToast("Properties comparison downloaded");
-                }else{
-                    showToast("Properties are same in both environments");
-                }
+                    const resEnv2 = await window.OFSC.MetaData.AllProperties(
+                        e2Client,
+                        e2Secret,
+                        e2Instance,
+                        ""
+                    );
+                    console.error(JSON.stringify(resEnv2, null, 2));
+                    const error = await window.OFSC.MetaData.compareProperties(resEnv1, resEnv2, e1Instance, e2Instance);
+
+
+                    if (error.length > 0) {
+                        window.OFSC.Utilities.downloadCSV(error, "Properties");
+                        showToast("Properties comparison downloaded");
+                    } else {
+                        showToast("Properties are same in both environments");
+                    }
 
                 } else {
                     console.log("Properties is NOT checked");
                 }
 
-                
+
 
             } catch (e) {
                 alert(e.message);
                 return;
-            }finally
-            {
+            } finally {
                 btn.classList.remove('loading');
                 btnText.textContent = "Compare Instances";
                 btnIcon.innerHTML = '<span class="btn-icon">⇄</span>';
                 btn.disabled = false;
-            }   
+            }
 
 
 
