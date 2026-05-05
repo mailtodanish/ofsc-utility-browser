@@ -1,6 +1,7 @@
 import * as Activity from "./activities";
 import * as DailyExtract from "./dailyExtract";
 import * as GPS from "./gps";
+import * as MetaData from "./metadata";
 import * as OauthTokenService from "./oauthTokenService";
 import * as Resources from "./resources";
 import * as Users from "./users";
@@ -8,7 +9,7 @@ import * as Utilities from "./utilities";
 import { downloadCSV } from "./utilities";
 
 // Export grouped namespaces
-export { Activity, DailyExtract, GPS, OauthTokenService, Resources, Users, Utilities };
+export { Activity, DailyExtract, GPS, MetaData, OauthTokenService, Resources, Users, Utilities };
 
 // Export types
   export * from "./types";
@@ -22,5 +23,6 @@ export default {
   downloadCSV,
   Users,
   DailyExtract,
-  GPS
+  GPS,
+  MetaData
 };
