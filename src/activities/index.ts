@@ -27,7 +27,8 @@ export async function getAllActivities(
     dateTo: string,
     q?: string,
     fields?: string,
-    includeNonScheduled: boolean = false
+    includeNonScheduled: boolean = false,
+    includeChildren: "none"|"all"|"immediate" = "none"
 ): Promise<any[]> {
 
     // Validate date inputs
@@ -51,8 +52,9 @@ export async function getAllActivities(
         });
 
         if (q) params.append("q", q);
+        if(includeChildren) params.append("includeChildren", includeChildren);
         if (resources) params.append("resources", resources);
-        if (fields) params.append("fields", fields);
+        if (fields) params.append("fields", fields+",activityId,resourceId,activityType");
         if (dateFrom) params.append("dateFrom", dateFrom);
         if (dateTo) params.append("dateTo", dateTo);
         if (includeNonScheduled) params.append("includeNonScheduled", "true");
